@@ -1,36 +1,5 @@
 <main class="main-content">
     <div class="container-fluid py-4">
-        <div class="row mb-4">
-            <x-opcion_menu_admin>
-                <x-slot name="boton">
-                    <x-boton_menu wire:click="opcion(1)" title="Home" class="btn-admin bg-gradient-info" nombreIcono="fa-solid fa-landmark"/>
-                </x-slot>
-            </x-opcion_menu_admin>
-            {{-- <div class="col-md-6 col-lg-6 px-md-4 px-lg-4 px-xl-6 px-xxl-8">
-                <div class="card">
-                    <div class="card-header mx-4 p-3 text-center">
-                        <x-boton_menu wire:click="opcion(1)" title="Home" class="btn-admin bg-gradient-info" nombreIcono="fa-solid fa-landmark"/>
-                    </div>
-                    <div class="card-body pt-0 p-3 text-center">
-                        <h6 class="text-center mb-0">Iglesia</h6>
-                        <hr class="horizontal dark my-3">
-                        <h5 class="mb-0">nombre o nro</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6 mt-4 mt-md-0 px-md-4 px-lg-4 px-xl-6 px-xxl-8">
-                <div class="card">
-                    <div class="card-header mx-4 p-3 text-center">
-                        <x-boton_menu wire:click="opcion(1)" title="Home" class="btn-admin bg-gradient-info" nombreIcono="fa-solid fa-users"/>
-                    </div>
-                    <div class="card-body pt-0 p-3 text-center">
-                        <h6 class="text-center mb-0">Miembros</h6>
-                        <hr class="horizontal dark my-3">
-                        <h5 class="mb-0">nro</h5>
-                    </div>
-                </div>
-            </div> --}}
-        </div>
         <div class="row">
             <div class="col-lg-8">
                 <div class="row">

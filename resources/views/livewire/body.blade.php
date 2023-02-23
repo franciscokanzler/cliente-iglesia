@@ -16,6 +16,6 @@
     @elseif ($paginar == 3)
         <livewire:tables>
     @elseif ($paginar == 4)
-        <livewire:billing>
+        <livewire:admin>
     @endif
 </div>
