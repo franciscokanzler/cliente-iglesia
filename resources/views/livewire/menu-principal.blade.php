@@ -1,6 +1,6 @@
 <div>
     <div class="row">
-        <div class="bg-dark">
+        <div {{-- class="bg-dark" --}}style="background-image: linear-gradient(310deg,#806b62,#b3a098);">
             <nav class="navbar navbar-expand-lg top-0 z-index-3 w-100 shadow-none my-2  navbar-transparent ">
                 <div class="container">
                     <div class="col-1">
@@ -22,21 +22,21 @@
                         </div> --}}
                         <div class="row col-11 mx-auto d-flex justify-content-center m-3" >
                             <div class="row col-12 mx-auto d-flex justify-content-center m-3" >
-                                <x-boton_menu wire:click="opcion(1)" title="Home" class="col-10 col-sm-6 col-md-6 col-lg-1 col-xl-1 btn-menu btn-outline-light mx-4" nombreIcono="fa-solid fa-house"/>
-                                <x-boton_menu wire:click="opcion(2)" title="Perfil" class="col-10 col-sm-6 col-md-6 col-lg-1 col-xl-1 btn-menu btn-outline-light mx-4" nombreIcono="fa-regular fa-user"/>
+                                <x-boton_menu wire:click="opcion(1)" title="Home" class="col-10 col-sm-6 col-md-6 col-lg-1 col-xl-1 btn-menu btn-admin mx-4" nombreIcono="fa-solid fa-house"/>
+                                <x-boton_menu wire:click="opcion(2)" title="Perfil" class="col-10 col-sm-6 col-md-6 col-lg-1 col-xl-1 btn-menu btn-admin mx-4" nombreIcono="fa-regular fa-user"/>
                             </div>
                             <div class="row col-12 mx-auto d-flex justify-content-center m-3" >
-                                <x-boton_menu wire:click="opcion(3)" title="Iglesia" class="col-10 col-sm-6 col-md-6 col-lg-1 col-xl-1 btn-menu btn-outline-light mx-4" nombreIcono="fa-solid fa-place-of-worship"/>
-                                <x-boton_menu wire:click="opcion(4)" title="Admin" class="col-10 col-sm-6 col-md-6 col-lg-1 col-xl-1 btn-menu btn-outline-light mx-4" nombreIcono="fa-solid fa-list"/>
+                                <x-boton_menu wire:click="opcion(3)" title="Iglesia" class="col-10 col-sm-6 col-md-6 col-lg-1 col-xl-1 btn-menu btn-admin mx-4" nombreIcono="fa-solid fa-place-of-worship"/>
+                                <x-boton_menu wire:click="opcion(4)" title="Admin" class="col-10 col-sm-6 col-md-6 col-lg-1 col-xl-1 btn-menu btn-admin mx-4" nombreIcono="fa-solid fa-list"/>
                             </div>
                         </div>
                     </div>
                     <div class="collapse navbar-collapse col-12 col-lg-10">
                         <div class="row col-11 mx-auto d-flex justify-content-center">
-                            <x-boton_menu wire:click="opcion(1)" title="Home" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-outline-light" nombreIcono="fa-solid fa-house"/>
-                            <x-boton_menu wire:click="opcion(2)" title="Perfil" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-outline-light" nombreIcono="fa-regular fa-user"/>
-                            <x-boton_menu wire:click="opcion(3)" title="Iglesia" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-outline-light" nombreIcono="fa-solid fa-place-of-worship"/>
-                            <x-boton_menu wire:click="opcion(4)" title="Admin" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-outline-light" nombreIcono="fa-solid fa-list"/>
+                            <x-boton_menu wire:click="opcion(1)" title="Home" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin" nombreIcono="fa-solid fa-house"/>
+                            <x-boton_menu wire:click="opcion(2)" title="Perfil" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin" nombreIcono="fa-solid fa-user"/>
+                            <x-boton_menu wire:click="opcion(3)" title="Iglesia" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin" nombreIcono="fa-solid fa-place-of-worship"/>
+                            <x-boton_menu wire:click="opcion(4)" title="Admin" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin" nombreIcono="fa-solid fa-list"/>
                         </div>
                         <div class="row col-11 col-sm-12 col-md-12 col-lg-1 col-xl-1 mx-auto">
                             <ul class="navbar-nav navbar-nav-hover d-flex justify-content-center">

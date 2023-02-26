@@ -2,7 +2,7 @@
     <livewire:menu-principal />
 
     <livewire:body />
-    <div class="mt-5">
+    <div class="mt-4">
         @include('layouts.footers.guest.with-socials')
     </div>
 
