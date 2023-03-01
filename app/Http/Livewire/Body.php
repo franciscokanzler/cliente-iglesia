@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class Body extends Component
 {
-    public $paginar = 4;
+    public $paginar = 5;
 
     protected $listeners = ['menu'];
 

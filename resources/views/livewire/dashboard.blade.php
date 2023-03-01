@@ -114,7 +114,7 @@
                                         class="position-absolute h-100 w-50 top-0 d-lg-block d-none" alt="waves">
                                     <div
                                         class="position-relative d-flex align-items-center justify-content-center h-100">
-                                        <img class="w-100 position-relative z-index-2 pt-4"
+                                        <img class="w-100 position-relative z-index-2 pt-4 move-on-hover"
                                             src="/assets/img/illustrations/warning-rocket.png">
                                     </div>
                                 </div>

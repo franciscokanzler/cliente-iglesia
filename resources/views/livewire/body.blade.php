@@ -17,5 +17,7 @@
         <livewire:tables>
     @elseif ($paginar == 4)
         <livewire:admin>
+    @elseif ($paginar == 5)
+        <livewire:iglesia.iglesia>
     @endif
 </div>
