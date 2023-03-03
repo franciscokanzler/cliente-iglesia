@@ -3,7 +3,15 @@
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header pb-0">
-                    <h6>Iglesias</h6>
+                    <div class="row">
+                        <div class="col-4">
+                            <h6>Iglesias</h6>
+                        </div>
+                        <div class="col-8 text-end pb-3 px-lg-4">
+                            <x-boton_menu title="Home" class="btn-admin bg-gradient-marron-oscuro p-0 mx-lg-4" nombreIcono="fa-solid fa-plus" data-bs-toggle="modal"
+                            data-bs-target="#modal-iglesia"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body px-3 pt-0 pb-2">
                     <div class="table-responsive p-0">
@@ -41,9 +49,9 @@
                                             {{$iglesia['fecha_creacion']}}
                                         </td>
                                         <td class="align-middle text-center">
-                                            <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin p-0" nombreIcono="fa-solid fa-magnifying-glass"/>
-                                            <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin p-0" nombreIcono="fa-solid fa-pen"/>
-                                            <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin p-0" nombreIcono="fa-solid fa-trash"/>
+                                            <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin bg-gradient-marron-claro p-0" nombreIcono="fa-solid fa-magnifying-glass"/>
+                                            <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin bg-gradient-marron p-0" nombreIcono="fa-solid fa-pen"/>
+                                            <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin bg-gradient-marron-oscuro p-0" nombreIcono="fa-solid fa-trash"/>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -54,4 +62,5 @@
             </div>
         </div>
     </div>
+    <livewire:iglesia.crear-iglesia>
 </div>

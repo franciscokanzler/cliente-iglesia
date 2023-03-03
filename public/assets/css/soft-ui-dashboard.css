@@ -2649,9 +2649,9 @@ progress {
 .form-control:focus {
   color: #495057;
   background-color: #fff;
-  border-color: #e293d3;
+  border-color: #806b62;
   outline: 0;
-  box-shadow: 0 0 0 2px #e9aede;
+  box-shadow: 0 0 0 2px #b3a098;
 }
 .form-control::-webkit-date-and-time-value {
   height: 1.4rem;
@@ -3473,7 +3473,7 @@ textarea.form-control-lg {
     height: 48px;
     background-position: center;
     border-radius: 0.75rem;
-    background-image: linear-gradient(310deg, #5d5f58 0%, #bfb2ac 100%);
+    /* background-image: linear-gradient(310deg, #5d5f58 0%, #bfb2ac 100%); */
     color: #fff;
     box-shadow: 0 8px 26px -4px rgba(9, 8, 8, 0.75), 0 8px 9px -5px rgb(15, 15, 15) !important;
 }
@@ -9424,6 +9424,10 @@ textarea.form-control-lg {
 .text-info {
   color: #17c1e8 !important;
 }
+
+.text-marron {
+    color: #806b62 !important;
+  }
 
 .text-warning {
   color: #fbcf33 !important;
@@ -20367,6 +20371,18 @@ label,
   background-image: linear-gradient(310deg, #2152ff 0%, #21d4fd 100%);
 }
 
+.bg-gradient-marron-claro {
+    background-image: linear-gradient(310deg,#806b62,#b3a098);
+}
+
+.bg-gradient-marron {
+    background-image: linear-gradient(310deg, #5d5f58 0%, #bfb2ac 100%);
+}
+
+.bg-gradient-marron-oscuro {
+    background-image: linear-gradient(310deg,#403631,#b3a098);
+}
+
 .bg-gradient-warning {
   background-image: linear-gradient(310deg, #f53939 0%, #fbcf33 100%);
 }
@@ -23037,6 +23053,9 @@ p {
 }
 .text-gradient.text-info {
   background-image: linear-gradient(310deg, #2152FF, #21D4FD);
+}
+.text-gradient.text-marron {
+    background-image: linear-gradient(310deg,#806b62,#b3a098);
 }
 .text-gradient.text-success {
   background-image: linear-gradient(310deg, #17AD37, #C1E823);

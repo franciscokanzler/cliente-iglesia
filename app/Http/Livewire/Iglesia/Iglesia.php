@@ -9,7 +9,7 @@ class Iglesia extends Component
 {
     public function render()
     {
-        $data = Http::withToken('20|cwn3s2yIcrRsIrKgDp8AdafokFGGoVkdguRiSaSI')
+        $data = Http::withToken('21|Z12VMz0Y1TB03hmx6iuokbnFUuF0wlYTqHwnfvcd')
                         ->accept('application/json')
                         ->get('http://127.0.0.1:8000/api/iglesias');
         $iglesias = $data['data'];
