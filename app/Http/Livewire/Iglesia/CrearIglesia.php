@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class CrearIglesia extends Component
 {
-    public $nombre, $correo, $fecha;
+    public $nombre, $correo, $fecha, $errors;
 
     public function guardar(){
         $data = Http::withToken('21|Z12VMz0Y1TB03hmx6iuokbnFUuF0wlYTqHwnfvcd')
@@ -17,7 +17,13 @@ class CrearIglesia extends Component
                             'correo' => $this->correo,
                             'fecha_creacion' => $this->fecha,
                         ]);
-        dd($data['data']);
+        if ($data['errors']) {
+            $this->errors = $data['errors'];
+            dd($this->errors,$this->errors['nombre']);
+        }else{
+            $this->reset(['nombre','correo','fecha']);
+            $this->emit('render');
+        }
     }
 
     public function render()

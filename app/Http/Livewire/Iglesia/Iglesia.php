@@ -7,6 +7,8 @@ use Livewire\Component;
 
 class Iglesia extends Component
 {
+    protected $listeners = ['render'];
+
     public function render()
     {
         $data = Http::withToken('21|Z12VMz0Y1TB03hmx6iuokbnFUuF0wlYTqHwnfvcd')

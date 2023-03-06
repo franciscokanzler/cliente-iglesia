@@ -1,5 +1,5 @@
 <div>
-    <div class="modal fade" id="modal-iglesia" tabindex="-1" role="dialog" aria-labelledby="modal-iglesia" aria-hidden="true">
+    <div {{-- wire:ignore.self --}} class="modal fade" id="modal-iglesia" tabindex="-1" role="dialog" aria-labelledby="modal-iglesia" aria-hidden="false">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-body p-0">
@@ -15,6 +15,11 @@
                                     <input type="text" class="form-control" placeholder="Nombre"
                                         aria-label="Nombre" aria-describedby="nombre-addon" wire:model.defer="nombre">
                                 </div>
+                                @if ($errors->nombre)
+                                    <p>{{ $errors->first('nombre') }}</p>
+                               {{--  @else
+                                    <p>{{ $errors->first('nombre') }}</p> --}}
+                                @endif
                                 <label>Correo</label>
                                 <div class="input-group mb-3">
                                     <input type="email" class="form-control" placeholder="Correo"
@@ -33,7 +38,7 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="text-center">
-                                            <button type="button" class="btn btn-admin bg-gradient-marron-oscuro btn-md w-100 mt-4 mb-0">Cancelar</button>
+                                            <button type="button" class="btn btn-admin bg-gradient-marron-oscuro btn-md w-100 mt-4 mb-0" data-dismiss="modal-iglesia">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>
