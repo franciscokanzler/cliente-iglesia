@@ -8,7 +8,7 @@
                             <h6>Iglesias</h6>
                         </div>
                         <div class="col-8 text-end pb-3 px-lg-4">
-                            <x-boton_menu title="Home" class="btn-admin bg-gradient-marron-oscuro p-0 mx-lg-4" nombreIcono="fa-solid fa-plus" data-bs-toggle="modal"
+                            <x-boton_menu wire:click="$emit('abrir')" title="Home" class="btn-admin bg-gradient-marron-oscuro p-0 mx-lg-4" nombreIcono="fa-solid fa-plus" data-bs-toggle="modal"
                             data-bs-target="#modal-iglesia"/>
                         </div>
                     </div>
