@@ -1,5 +1,5 @@
 <div>
-    <div wire:ignore.self class="modal fade" id="modal-iglesia" tabindex="-1" role="dialog" aria-labelledby="modal-iglesia" aria-hidden="false">
+    <div wire:ignore.self class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal-iglesia" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-body p-0">
@@ -42,7 +42,7 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="text-center">
-                                            <button type="button" class="btn btn-admin bg-gradient-marron-oscuro btn-md w-100 mt-4 mb-0" data-dismiss="modal-iglesia">Cancelar</button>
+                                            <button type="button" class="btn btn-admin bg-gradient-marron-oscuro btn-md w-100 mt-4 mb-0" data-bs-dismiss="modal-iglesia" wire:click="borrar()">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>

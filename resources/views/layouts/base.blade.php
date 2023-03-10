@@ -45,6 +45,12 @@
 
     </script> --}}
     <!-- Github buttons -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script>
+        window.addEventListener('closeModal', event => {
+            $("#modal").modal('hide');
+        });
+    </script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     {{-- <script src="assets/js/soft-ui-dashboard.js"></script> --}}

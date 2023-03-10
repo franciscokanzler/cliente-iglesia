@@ -1,6 +1,15 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
+            @if (session()->has('message'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                    <span class="alert-text"><strong>Danger!</strong> {{ session('message') }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <div class="card mb-4">
                 <div class="card-header pb-0">
                     <div class="row">
@@ -9,7 +18,7 @@
                         </div>
                         <div class="col-8 text-end pb-3 px-lg-4">
                             <x-boton_menu wire:click="$emit('abrir')" title="Home" class="btn-admin bg-gradient-marron-oscuro p-0 mx-lg-4" nombreIcono="fa-solid fa-plus" data-bs-toggle="modal"
-                            data-bs-target="#modal-iglesia"/>
+                            data-bs-target="#modal"/>
                         </div>
                     </div>
                 </div>
@@ -51,7 +60,7 @@
                                         <td class="align-middle text-center">
                                             <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin bg-gradient-marron-claro p-0" nombreIcono="fa-solid fa-magnifying-glass"/>
                                             <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin bg-gradient-marron p-0" nombreIcono="fa-solid fa-pen"/>
-                                            <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin bg-gradient-marron-oscuro p-0" nombreIcono="fa-solid fa-trash"/>
+                                            <x-boton_menu wire:click="eliminar({{$iglesia['id']}})" title="Home" class="btn-admin bg-gradient-marron-oscuro p-0" nombreIcono="fa-solid fa-trash"/>
                                         </td>
                                     </tr>
                                 @endforeach

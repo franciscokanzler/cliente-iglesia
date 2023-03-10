@@ -23,10 +23,9 @@ class CrearIglesia extends Component
     }
 
     public function guardar(){
-
         $this->validate();
 
-        $data = Http::withToken('21|Z12VMz0Y1TB03hmx6iuokbnFUuF0wlYTqHwnfvcd')
+        $data = Http::withToken('1|D73Uymrcmup0YAmB8sUfWrOZX6IPTXC4cNg3Pgj9')
                         ->accept('application/json')
                         ->post('http://127.0.0.1:8000/api/iglesias',[
                             'nombre' => $this->nombre,
@@ -35,11 +34,17 @@ class CrearIglesia extends Component
                         ]);
 
         $this->reset(['nombre','correo','fecha']);
+        $this->dispatchBrowserEvent('closeModal');
         $this->emit('render');
     }
 
-    public function render()
-    {
+    public function borrar(){
+        $this->dispatchBrowserEvent('closeModal');
+        $this->resetErrorBag();
+        $this->resetValidation();
+    }
+
+    public function render(){
         return view('livewire.iglesia.crear-iglesia');
     }
 }

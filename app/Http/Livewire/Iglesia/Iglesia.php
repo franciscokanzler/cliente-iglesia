@@ -9,9 +9,16 @@ class Iglesia extends Component
 {
     protected $listeners = ['render'];
 
+    public function eliminar($id){
+        $data = Http::withToken('1|D73Uymrcmup0YAmB8sUfWrOZX6IPTXC4cNg3Pgj9')
+                        ->accept('application/json')
+                        ->delete('http://127.0.0.1:8000/api/iglesias/'.$id);
+        session()->flash('message','iglesia '.$data.' eliminada');
+    }
+
     public function render()
     {
-        $data = Http::withToken('21|Z12VMz0Y1TB03hmx6iuokbnFUuF0wlYTqHwnfvcd')
+        $data = Http::withToken('1|D73Uymrcmup0YAmB8sUfWrOZX6IPTXC4cNg3Pgj9')
                         ->accept('application/json')
                         ->get('http://127.0.0.1:8000/api/iglesias');
         $iglesias = $data['data'];
