@@ -53,9 +53,18 @@
                                     </div>
                                 </div>
                                 <div class="col-11 col-lg-1 m-auto d-flex justify-content-center">
-                                    <a class="text-white cursor-pointer">
-                                        <i class="fa fa-cog fixed-plugin-button-nav"></i>
-                                    </a>
+                                    <div class="dropdown">
+                                        <a class="text-white cursor-pointer" type="button" id="dropdownMenuButton"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-cog fixed-plugin-button-nav"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-right px-2 py-3 ms-n4"
+                                            aria-labelledby="dropdownMenuButton">
+                                            <a class="cursor-pointer" type="button" wire:click="logout">
+                                                <i class="fa fa-cog fixed-plugin-button-nav"></i>
+                                            </a>
+                                        </ul>
+                                    </div>
                                 </div>
                                 {{-- <div class="col-auto">
                                     <div class="bg-white border-radius-lg d-flex me-2">

@@ -6,12 +6,21 @@
                     <div class="card card-plain mt-8">
                         <div class="card-header pb-0 text-left bg-transparent">
                             <h3 class="font-weight-bolder text-info text-gradient">{{ __('Welcome back') }}</h3>
-                            <p class="mb-0">{{ __('Create a new acount')}}<br></p>
-                            <p class="mb-0">{{__('OR Sign in with these credentials:') }}</p>
-                            <p class="mb-0">{{ __('Email ') }}<b>{{ __('admin@softui.com') }}</b></p>
+                            <p class="mb-0">{{ __('Create a new acount') }}<br></p>
+                            <p class="mb-0">{{ __('OR Sign in with these credentials:') }}</p>
+                            <p class="mb-0">{{ __('Email ') }}<b>{{ __('admin@admin.com') }}</b></p>
                             <p class="mb-0">{{ __('Password ') }}<b>{{ __('secret') }}</b></p>
                         </div>
                         <div class="card-body">
+                            @if ($errorMessage)
+                                <div class="alert alert-danger d-flex justify-content-between align-items-center"
+                                    wire:poll.visible>
+                                    <span>{{ $errorMessage }}</span>
+                                    <button type="button" wire:click="closeAlert" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
                             <form wire:submit.prevent="login" action="#" method="POST" role="form text-left">
                                 <div class="mb-3">
                                     <label for="email">{{ __('Email') }}</label>
@@ -19,7 +28,9 @@
                                         <input wire:model="email" id="email" type="email" class="form-control"
                                             placeholder="Email" aria-label="Email" aria-describedby="email-addon">
                                     </div>
-                                    @error('email') <div class="text-danger">{{ $message }}</div> @enderror
+                                    @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="password">{{ __('Password') }}</label>
@@ -28,7 +39,9 @@
                                             placeholder="Password" aria-label="Password"
                                             aria-describedby="password-addon">
                                     </div>
-                                    @error('password') <div class="text-danger">{{ $message }}</div> @enderror
+                                    @error('password')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="form-check form-switch">
                                     <input wire:model="remember_me" class="form-check-input" type="checkbox"

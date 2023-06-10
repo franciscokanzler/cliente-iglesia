@@ -17,8 +17,8 @@
                             <h6>Iglesias</h6>
                         </div>
                         <div class="col-8 text-end pb-3 px-lg-4">
-                            <x-boton_menu wire:click="$emit('abrir')" title="Home" class="btn-admin bg-gradient-marron-oscuro p-0 mx-lg-4" nombreIcono="fa-solid fa-plus" data-bs-toggle="modal"
-                            data-bs-target="#modal"/>
+                            <x-boton_menu wire:click="$emit('limpiarCrearIglesia')" title="Home" class="btn-admin bg-gradient-marron-oscuro p-0 mx-lg-4" nombreIcono="fa-solid fa-plus" data-bs-toggle="modal"
+                            data-bs-target="#modalCrearIglesia"/>
                         </div>
                     </div>
                 </div>
@@ -58,8 +58,9 @@
                                             {{$iglesia['fecha_creacion']}}
                                         </td>
                                         <td class="align-middle text-center">
-                                            <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin bg-gradient-marron-claro p-0" nombreIcono="fa-solid fa-magnifying-glass"/>
-                                            <x-boton_menu wire:click="opcion(4)" title="Home" class="btn-admin bg-gradient-marron p-0" nombreIcono="fa-solid fa-pen"/>
+                                            <x-boton_menu wire:click="" title="Home" class="btn-admin bg-gradient-marron-claro p-0" nombreIcono="fa-solid fa-magnifying-glass"/>
+                                            <x-boton_menu wire:click="$emit('EditarIglesia', {{$iglesia['id']}})" title="Home" class="btn-admin bg-gradient-marron p-0" nombreIcono="fa-solid fa-pen" data-bs-toggle="modal"
+                                            data-bs-target="#modalEditarIglesia"/>
                                             <x-boton_menu wire:click="eliminar({{$iglesia['id']}})" title="Home" class="btn-admin bg-gradient-marron-oscuro p-0" nombreIcono="fa-solid fa-trash"/>
                                         </td>
                                     </tr>
@@ -72,4 +73,5 @@
         </div>
     </div>
     <livewire:iglesia.crear-iglesia>
+    <livewire:iglesia.editar-iglesia>
 </div>

@@ -23070,6 +23070,10 @@ p {
   background-image: linear-gradient(310deg, #141727, #3A416F);
 }
 
+.text-gradient.text-light {
+    background-image: linear-gradient(310deg, #e9ecef, #e9ecef);
+}
+
 .blockquote {
   border-left: 3px solid #6c757d;
 }

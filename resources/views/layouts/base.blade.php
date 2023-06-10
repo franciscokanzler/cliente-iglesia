@@ -28,7 +28,11 @@
 
 <body class="g-sidenav-show bg-gray-100 mx-auto">
 
-    {{ $slot }}
+    @if (session('token'))
+        {{ $slot }}
+    @else
+        <livewire:auth.login />
+    @endif
 
     <!--   Core JS Files   -->
     <script src="assets/js/core/popper.min.js"></script>
@@ -48,7 +52,8 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script>
         window.addEventListener('closeModal', event => {
-            $("#modal").modal('hide');
+            $("#modalCrearIglesia").modal('hide');
+            $("#modalEditarIglesia").modal('hide');
         });
     </script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>

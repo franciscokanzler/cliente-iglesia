@@ -1,11 +1,11 @@
 <div>
-    <div wire:ignore.self class="modal fade" id="modalCrearIglesia" tabindex="-1" role="dialog" aria-labelledby="modal-CrearIglesia" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="modalEditarIglesia" tabindex="-1" role="dialog" aria-labelledby="modal-EditarIglesia" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-body p-0">
                     <div class="card card-plain">
                         <div class="card-header pb-0 text-left">
-                            <h3 class="font-weight-bolder text-marron text-gradient">Agregar nueva iglesia</h3>
+                            <h3 class="font-weight-bolder text-marron text-gradient">Editar iglesia</h3>
                             <p class="mb-0">Ingresa los siguientes datos:</p>
                         </div>
                         <div class="card-body">
@@ -37,12 +37,12 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="text-center">
-                                            <button type="button" class="btn btn-admin bg-gradient-marron btn-md w-100 mt-4 mb-0" wire:click="guardar">Guardar</button>
+                                            <button type="button" class="btn btn-admin bg-gradient-marron btn-md w-100 mt-4 mb-0" wire:click="update">Editar</button>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="text-center">
-                                            <button type="button" class="btn btn-admin bg-gradient-marron-oscuro btn-md w-100 mt-4 mb-0" data-bs-dismiss="modal-CrearIglesia" wire:click="borrar()">Cancelar</button>
+                                            <button type="button" class="btn btn-admin bg-gradient-marron-oscuro btn-md w-100 mt-4 mb-0" data-bs-dismiss="modal-EditarIglesia" wire:click="borrar()">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -54,3 +54,4 @@
         </div>
     </div>
 </div>
+
