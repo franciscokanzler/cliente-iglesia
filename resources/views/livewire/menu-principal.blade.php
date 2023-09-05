@@ -32,10 +32,10 @@
                 </div>
                 <div class="collapse navbar-collapse col-12 col-lg-10">
                     <div class="row col-11 mx-auto d-flex justify-content-center">
-                        <x-boton_menu wire:click="opcion(1)" title="Home" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin bg-gradient-marron-oscuro" nombreIcono="fa-solid fa-house"/>
-                        <x-boton_menu wire:click="opcion(2)" title="Perfil" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin bg-gradient-marron-oscuro" nombreIcono="fa-solid fa-user"/>
-                        <x-boton_menu wire:click="opcion(3)" title="Iglesia" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin bg-gradient-marron-oscuro" nombreIcono="fa-solid fa-place-of-worship"/>
-                        <x-boton_menu wire:click="opcion(4)" title="Admin" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin bg-gradient-marron-oscuro" nombreIcono="fa-solid fa-list"/>
+                        <x-boton_menu wire:click="opcion('dashboard')" title="Home" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin bg-gradient-marron-oscuro" nombreIcono="fa-solid fa-house"/>
+                        <x-boton_menu wire:click="opcion('profile')" title="Perfil" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin bg-gradient-marron-oscuro" nombreIcono="fa-solid fa-user"/>
+                        <x-boton_menu wire:click="opcion('tables')" title="Iglesia" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin bg-gradient-marron-oscuro" nombreIcono="fa-solid fa-place-of-worship"/>
+                        <x-boton_menu wire:click="opcion('admin')" title="Admin" class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  btn-admin bg-gradient-marron-oscuro" nombreIcono="fa-solid fa-list"/>
                     </div>
                     <div class="row col-11 col-sm-12 col-md-12 col-lg-1 col-xl-1 mx-auto">
                         <ul class="navbar-nav navbar-nav-hover d-flex justify-content-center">

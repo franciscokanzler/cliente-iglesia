@@ -54,6 +54,11 @@
         window.addEventListener('closeModal', event => {
             $("#modalCrearIglesia").modal('hide');
             $("#modalEditarIglesia").modal('hide');
+            $("#modalConsultarIglesia").modal('hide');
+
+            $("#modalCrearMiembro").modal('hide');
+            $("#modalEditarMiembro").modal('hide');
+            $("#modalConsultarMiembro").modal('hide');
         });
     </script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>

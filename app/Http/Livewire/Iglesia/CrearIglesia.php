@@ -13,13 +13,14 @@ class CrearIglesia extends Component
     protected $listeners = ['limpiarCrearIglesia'];
 
     protected $rules = [
-        'nombre' => 'required',
+        'nombre' => 'required|alpha',
         'correo' => 'required|email',
         'fecha' => 'nullable|date',
     ];
 
     protected $ErrorMessages = [
         'nombre.required' => 'Estimado usuario, el nombre es requerido ',
+        'nombre.alpha' => 'El campo nombre solo puede contener letras.',
         'correo.required' => 'Estimado usuario, el correo es requerido ',
         'correo.email' => 'Estimado usuario, el formato de correo ingresado es incorrecto ',
         'fecha.date' => 'Estimado usuario, el formato de fecha ingresado es incorrecto ',

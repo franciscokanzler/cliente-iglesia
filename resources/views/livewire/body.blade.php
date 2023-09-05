@@ -9,15 +9,17 @@
         </div>
     @endif
     {{-- {{$paginar}} --}}
-    @if ($paginar == 1)
+    @if ($paginar == 'dashboard')
         <livewire:dashboard>
-    @elseif ($paginar == 2)
+    @elseif ($paginar == 'profile')
         <livewire:profile>
-    @elseif ($paginar == 3)
+    @elseif ($paginar == 'tables')
         <livewire:tables>
-    @elseif ($paginar == 4)
+    @elseif ($paginar == 'admin')
         <livewire:admin>
-    @elseif ($paginar == 5)
+    @elseif ($paginar == 'iglesia.index')
         <livewire:iglesia.iglesia>
+    @elseif ($paginar == 'miembro.index')
+        <livewire:miembro.miembro-index>
     @endif
 </div>

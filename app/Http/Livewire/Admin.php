@@ -6,9 +6,9 @@ use Livewire\Component;
 
 class Admin extends Component
 {
-    public function opcion($numero)
+    public function opcion($opcion)
     {
-        $this->emit('menu',$numero);
+        $this->emit('menu',$opcion);
     }
 
     public function render()
