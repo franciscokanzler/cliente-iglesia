@@ -10,9 +10,9 @@ class Body extends Component
 
     protected $listeners = ['menu'];
 
-    public function menu($numero=Null){
-        /* session()->flash('message', 'llego '.$numero); */
-        $this->paginar = $numero;
+    public function menu($opcion=Null){
+        /* session()->flash('message', 'llego '.$opcion); */
+        $this->paginar = $opcion;
     }
 
     public function render()

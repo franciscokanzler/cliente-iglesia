@@ -4,19 +4,87 @@ namespace App\Http\Livewire\Miembro;
 
 use Livewire\Component;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 class CrearMiembro extends Component
 {
-    public $nombre, $apellido, $fecha_nacimiento, $ci, $edad, $telefono, $correo, $nro_casa, $calle;
+    public $nombre, $apellido, $fechaNacimiento, $ci, $edad, $telefono, $correo, $nro_casa, $calle;
 
     public $id_representante, $iglesia_id, $rango_id, $estado_civil_id, $estado_id, $municipio_id, $parroquia_id;
 
+    public $data, $municipio, $parroquia;
+
+    public $currentStep = 1;
+
     protected $listeners = ['limpiarCrearMiembro'];
+
+    public function mount(){
+        $response = Http::withToken(session('token'))
+                        ->accept('application/json')
+                        ->get('http://127.0.0.1:8000/api/miembros/create');
+
+        $this->data = json_decode((string)$response->getBody(), true);
+
+        //dd($this->data);
+    }
 
     public function limpiarCrearMiembro(){
         /* $this->reset(['nombre','correo','fecha']); */
         $this->resetErrorBag();
         $this->resetValidation();
     }
+
+    public function updatedFechaNacimiento(){
+        if (!empty($this->fechaNacimiento)) {
+            $fechaNacimiento = Carbon::createFromFormat('Y-m-d', $this->fechaNacimiento);
+            $this->edad = $fechaNacimiento->diffInYears(Carbon::now());
+        }
+
+        if($this->edad < 9){
+            $this->ci = "";
+            $this->estado_civil_id = "";
+
+        }
+    }
+
+    public function Municipio($id_estado)
+    {
+        try {
+            $response = Http::withToken(session('token'))
+                            ->accept('application/json')
+                            ->get(config('app.api_url') . 'municipios/' . $id_estado);
+
+            $data = json_decode((string)$response->getBody(), true);
+            $this->municipio_id = "";
+            $this->parroquia_id = "";
+            $this->municipio = $data['municipio'];
+        } catch (\Throwable $th) {
+            Log::error('Error función CrearMiembro.Municipio: ' . $th->getMessage());
+            Log::error('Archivo: ' . $th->getFile());
+            Log::error('Línea: ' . $th->getLine());
+        }
+    }
+
+    public function Parroquia($id_municipio)
+    {
+        try {
+            $response = Http::withToken(session('token'))
+                            ->accept('application/json')
+                            ->get(config('app.api_url') . 'parroquias/' . $id_municipio);
+
+            $data = json_decode((string)$response->getBody(), true);
+            //dd($data);
+            $this->parroquia_id = "";
+            $this->parroquia = $data['parroquia'];
+        } catch (\Throwable $th) {
+            Log::error('Error función CrearMiembro.Parroquia: ' . $th->getMessage());
+            Log::error('Archivo: ' . $th->getFile());
+            Log::error('Línea: ' . $th->getLine());
+        }
+    }
+
 
     protected $rules = [
         'nombre' => 'required|alpha',
@@ -86,6 +154,47 @@ class CrearMiembro extends Component
         $this->dispatchBrowserEvent('closeModal');
         $this->resetErrorBag();
         $this->resetValidation();
+    }
+
+    public function firstStepSubmit()
+    {
+        /* $validatedData = $this->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'detail' => 'required',
+        ]); */
+
+        $this->currentStep = 2;
+    }
+
+    public function secondStepSubmit()
+    {
+        /* $validatedData = $this->validate([
+            'status' => 'required',
+        ]); */
+
+        $this->currentStep = 3;
+    }
+
+    public function submitForm()
+    {
+        /* Team::create([
+            'name' => $this->name,
+            'price' => $this->price,
+            'detail' => $this->detail,
+            'status' => $this->status,
+        ]);
+
+        $this->successMsg = 'Team successfully created.';
+
+        $this->clearForm(); */
+
+        $this->currentStep = 1;
+    }
+
+    public function back($step)
+    {
+        $this->currentStep = $step;
     }
 
     public function render()

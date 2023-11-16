@@ -57,8 +57,8 @@ return [
     | your application so that it is used when running Artisan tasks.
     |
     */
-    'url' => env('APP_URL', 'http://127.0.0.1:8000/api/'),
-    'url_api' => env('URL_API','http://127.0.0.1:8000/api/'),
+    'url' => env('APP_URL'),
+    'api_url' => env('API_URL'),
 
     'asset_url' => env('ASSET_URL', null),
 
