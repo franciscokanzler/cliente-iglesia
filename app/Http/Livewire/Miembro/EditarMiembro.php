@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
-class CrearMiembro extends Component
+class EditarMiembro extends Component
 {
     use LivewireAlert;
 
@@ -19,24 +19,9 @@ class CrearMiembro extends Component
 
     public $data, $municipio, $parroquia;
 
-    public $currentStep = 1, $opcion = "guardar";
+    public $currentStep = 1, $opcion = "actualizar";
 
-    protected $listeners = ['limpiarModal'];
-
-    public function mount(){
-        try {
-            $response = Http::withToken(session('token'))
-                            ->accept('application/json')
-                            ->get(config('app.api_url').'miembros/create');
-
-            $this->data = json_decode((string)$response->getBody(), true);
-        } catch (\Throwable $th) {
-            Log::error('Error función CrearMiembro.mount: ' . $th->getMessage());
-            Log::error('Archivo: ' . $th->getFile());
-            Log::error('Línea: ' . $th->getLine());
-        }
-        //dd($this->data);
-    }
+    protected $listeners = ['limpiarModal', 'DatosMiembro'];
 
     public function limpiarModal(){
         $this->currentStep = 1;
@@ -60,6 +45,11 @@ class CrearMiembro extends Component
             $this->estado_civil_id = "";
 
         }
+
+        if ($this->edad > 17) {
+            $this->representante = "";
+            $this->id_representante = "";
+        }
     }
 
     public function Municipio($estado_id)
@@ -80,7 +70,7 @@ class CrearMiembro extends Component
                 $this->parroquia = "";
             }
         } catch (\Throwable $th) {
-            Log::error('Error función CrearMiembro.Municipio: ' . $th->getMessage());
+            Log::error('Error función EditarMiembro.Municipio: ' . $th->getMessage());
             Log::error('Archivo: ' . $th->getFile());
             Log::error('Línea: ' . $th->getLine());
         }
@@ -103,7 +93,7 @@ class CrearMiembro extends Component
                 $this->parroquia = "";
             }
         } catch (\Throwable $th) {
-            Log::error('Error función CrearMiembro.Parroquia: ' . $th->getMessage());
+            Log::error('Error función EditarMiembro.Parroquia: ' . $th->getMessage());
             Log::error('Archivo: ' . $th->getFile());
             Log::error('Línea: ' . $th->getLine());
         }
@@ -195,13 +185,63 @@ class CrearMiembro extends Component
         return $this->ErrorMessages;
     }
 
-    public function guardar(){
+    public function DatosMiembro($miembro){
+        try {
+            $this->limpiarModal();
+            $miembro = Http::withToken(session('token'))
+                            ->accept('application/json')
+                            ->get(config('app.api_url').'miembros/'.$miembro.'/edit');
 
+            $miembro = json_decode((string)$miembro->getBody(), true);
+            $miembro = $miembro['miembro'];
+            //dd($miembro);
+            $this->nombre = $miembro['nombre'];
+            $this->apellido = $miembro['apellido'];
+            $this->fechaNacimiento = $miembro['fecha_nacimiento'];
+            $this->ci = $miembro['ci'];
+            $this->edad = $miembro['edad'];
+            $this->telefono = $miembro['telefono'];
+            $this->correo = $miembro['correo'];
+            $this->nro_casa = $miembro['nro_casa'];
+            $this->calle = $miembro['calle'];
+            if (isset($miembro['representante'])) {
+                $this->representante = $miembro['representante'];
+                $this->id_representante = $miembro['id_representante'];
+                $this->representante_ci = $miembro['representante']['ci'];
+            }
+            $this->iglesia_id = $miembro['iglesia_id'];
+            $this->rango_id = $miembro['rango_id'];
+            $this->estado_civil_id = $miembro['estado_civil_id'];
+            $this->estado_id = $miembro['estado_id'];
+
+            $datosSelect = Http::withToken(session('token'))
+                            ->accept('application/json')
+                            ->get(config('app.api_url').'miembros/create');
+
+            $this->data = json_decode((string)$datosSelect->getBody(), true);
+            $this->data['miembro_id'] = $miembro['id'];
+
+            $this->Municipio($miembro['estado_id']);
+            $this->Parroquia($miembro['municipio_id']);
+
+
+            $this->municipio_id = $miembro['municipio_id'];
+            $this->parroquia_id = $miembro['parroquia_id'];
+
+
+        } catch (\Throwable $th) {
+            Log::error('Error función EditarMiembro.DatosMiembro: ' . $th->getMessage());
+            Log::error('Archivo: ' . $th->getFile());
+            Log::error('Línea: ' . $th->getLine());
+        }
+    }
+
+    public function actualizar($id){
         $this->validate();
 
         $data = Http::withToken(session('token'))
                         ->accept('application/json')
-                        ->post(config('app.api_url') .'miembros',[
+                        ->put(config('app.api_url') .'miembros/'.$id,[
                             'nombre' => $this->nombre,
                             'apellido' => $this->apellido,
                             'fecha_nacimiento' => $this->fechaNacimiento,
@@ -222,24 +262,22 @@ class CrearMiembro extends Component
 
         //$data = json_decode((string)$data->getBody(), true);
         if ($data->successful()){
-            $this->alert('success', 'Miembro creado satisfactoriamente', [
+            $this->alert('success', 'Miembro actualizado satisfactoriamente', [
                 'position' => 'center'
             ]);
-            //TODO: falta resetear el formulario cuando abre y cierra
             //$this->reset(['nombre','correo','fecha']);
             $this->dispatchBrowserEvent('closeModal');
             $this->emit('render');
         }else{
-            $this->alert('warning', 'Estimado usuario, no se ha podido registrar el nuevo miembro, por favor intente más tarde.', [
+            $this->alert('warning', 'Estimado usuario, no se ha podido actualizar el miembro, por favor intente más tarde.', [
                 'position' => 'center'
             ]);
+            //dd(json_decode((string)$data->getBody(), true));
         }
     }
 
-    public function borrar(){
+    public function salir(){
         $this->dispatchBrowserEvent('closeModal');
-        $this->resetErrorBag();
-        $this->resetValidation();
     }
 
     public function formStep($step)
@@ -249,6 +287,6 @@ class CrearMiembro extends Component
 
     public function render()
     {
-        return view('livewire.miembro.crear-miembro');
+        return view('livewire.miembro.editar-miembro');
     }
 }

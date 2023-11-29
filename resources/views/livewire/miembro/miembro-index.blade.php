@@ -17,7 +17,7 @@
                             <h6>Miembros</h6>
                         </div>
                         <div class="col-8 text-end pb-3 px-lg-4">
-                            <x-boton_menu wire:click="$emit('limpiarCrearMiembro')" title="Home" class="btn-admin bg-gradient-marron-oscuro p-0 mx-lg-4" nombreIcono="fa-solid fa-plus" data-bs-toggle="modal"
+                            <x-boton_menu wire:click="$emit('limpiarModal')" title="Home" class="btn-admin bg-gradient-marron-oscuro p-0 mx-lg-4" nombreIcono="fa-solid fa-plus" data-bs-toggle="modal"
                             data-bs-target="#modalCrearMiembro"/>
                         </div>
                     </div>
@@ -49,38 +49,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($miembros as $miembro)
-                                    <tr class="pb-2">
-                                        <td>
-                                            {{$miembro['id']}}
-                                        </td>
-                                        <td>
-                                            {{$miembro['nombre']}}
-                                        </td>
-                                        <td>
-                                            {{$miembro['apellido']}}
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            {{$miembro['fecha_nacimiento']}}
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            {{$miembro['ci']}}
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            {{$miembro['edad']}}
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            {{$miembro['iglesia']['nombre']}}
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <x-boton_menu wire:click="$emit('ConsultarMiembro', {{$miembro['id']}})" title="Ver" class="btn-admin bg-gradient-marron-claro p-0" nombreIcono="fa-solid fa-magnifying-glass" data-bs-toggle="modal"
-                                            data-bs-target="#modalConsultarMiembro"/>
-                                            <x-boton_menu wire:click="$emit('EditarMiembro', {{$miembro['id']}})" title="Editar" class="btn-admin bg-gradient-marron p-0" nombreIcono="fa-solid fa-pen" data-bs-toggle="modal"
-                                            data-bs-target="#modalEditarMiembro"/>
-                                            <x-boton_menu wire:click="eliminar({{$miembro['id']}})" title="Eliminar" class="btn-admin bg-gradient-marron-oscuro p-0" nombreIcono="fa-solid fa-trash"/>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                @if ($miembros != [])
+                                    @foreach ($miembros  as $miembro)
+                                        <tr class="pb-2">
+                                            <td>
+                                                {{$miembro['id']}}
+                                            </td>
+                                            <td>
+                                                {{$miembro['nombre']}}
+                                            </td>
+                                            <td>
+                                                {{$miembro['apellido']}}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{$miembro['fecha_nacimiento']}}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{$miembro['ci']}}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{$miembro['edad']}}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{$miembro['iglesia']['nombre']}}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <x-boton_menu wire:click="$emit('readMiembro', {{$miembro['id']}})" title="Ver" class="btn-admin bg-gradient-marron-claro p-0" nombreIcono="fa-solid fa-magnifying-glass" data-bs-toggle="modal"
+                                                data-bs-target="#modalConsultarMiembro"/>
+                                                <x-boton_menu wire:click="$emit('DatosMiembro', {{$miembro['id']}})" title="Editar"
+                                                class="btn-admin bg-gradient-marron p-0" nombreIcono="fa-solid fa-pen"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalEditarMiembro"/>
+                                                <x-boton_menu wire:click="eliminar({{$miembro['id']}})" title="Eliminar" class="btn-admin bg-gradient-marron-oscuro p-0" nombreIcono="fa-solid fa-trash"/>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -89,6 +93,6 @@
         </div>
     </div>
     <livewire:miembro.crear-miembro>
-    {{-- <livewire:miembro.editar-miembro>
-    <livewire:miembro.consultar-miembro> --}}
+    <livewire:miembro.editar-miembro>
+    <livewire:miembro.consultar-miembro>
 </div>
