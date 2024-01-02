@@ -21,13 +21,14 @@ class CrearMiembro extends Component
 
     public $currentStep = 1, $opcion = "guardar";
 
-    protected $listeners = ['limpiarModal'];
+    protected $listeners = ['limpiarModal' => 'createProcesar'];
 
-    public function mount(){
+    public function mount()
+    {
         try {
             $response = Http::withToken(session('token'))
-                            ->accept('application/json')
-                            ->get(config('app.api_url').'miembros/create');
+                ->accept('application/json')
+                ->get(config('app.api_url') . 'miembros/create');
 
             $this->data = json_decode((string)$response->getBody(), true);
         } catch (\Throwable $th) {
@@ -38,7 +39,8 @@ class CrearMiembro extends Component
         //dd($this->data);
     }
 
-    public function limpiarModal(){
+    public function limpiarModal()
+    {
         $this->currentStep = 1;
         $this->reset([
             'nombre', 'apellido', 'fechaNacimiento', 'ci', 'edad', 'telefono', 'correo', 'nro_casa', 'calle',
@@ -49,16 +51,26 @@ class CrearMiembro extends Component
         $this->resetValidation();
     }
 
-    public function updatedFechaNacimiento(){
+    public function createProcesar()
+    {
+        $this->limpiarModal();
+        $datos = [
+            'modal' => '#modalCrearMiembro',
+            'accion' => 'abrir'
+        ];
+        $this->dispatchBrowserEvent('modal', $datos);
+    }
+
+    public function updatedFechaNacimiento()
+    {
         if (!empty($this->fechaNacimiento)) {
             $fechaNacimiento = Carbon::createFromFormat('Y-m-d', $this->fechaNacimiento);
             $this->edad = $fechaNacimiento->diffInYears(Carbon::now());
         }
 
-        if($this->edad < 9){
+        if ($this->edad < 9) {
             $this->ci = "";
             $this->estado_civil_id = "";
-
         }
     }
 
@@ -67,13 +79,13 @@ class CrearMiembro extends Component
         try {
             if ($estado_id != "") {
                 $response = Http::withToken(session('token'))
-                            ->accept('application/json')
-                            ->get(config('app.api_url') . 'municipios/' . $estado_id);
+                    ->accept('application/json')
+                    ->get(config('app.api_url') . 'municipios/' . $estado_id);
                 $data = json_decode((string)$response->getBody(), true);
                 $this->municipio_id = "";
                 $this->parroquia_id = "";
                 $this->municipio = $data['municipio'];
-            }else{
+            } else {
                 $this->municipio_id = "";
                 $this->parroquia_id = "";
                 $this->municipio = "";
@@ -91,14 +103,14 @@ class CrearMiembro extends Component
         try {
             if ($municipio_id != "") {
                 $response = Http::withToken(session('token'))
-                                ->accept('application/json')
-                                ->get(config('app.api_url') . 'parroquias/' . $municipio_id);
+                    ->accept('application/json')
+                    ->get(config('app.api_url') . 'parroquias/' . $municipio_id);
 
                 $data = json_decode((string)$response->getBody(), true);
                 //dd($data);
                 $this->parroquia_id = "";
                 $this->parroquia = $data['parroquia'];
-            }else{
+            } else {
                 $this->parroquia_id = "";
                 $this->parroquia = "";
             }
@@ -109,12 +121,13 @@ class CrearMiembro extends Component
         }
     }
 
-    public function buscarRepresentante(){
+    public function buscarRepresentante()
+    {
         if ($this->representante_ci != "") {
             //list($type, $representante_ci) = explode('-', Str::upper($this->representante_ci));
             $response = Http::withToken(session('token'))
-                                ->accept('application/json')
-                                ->get(config('app.api_url') . 'representante/' . $this->representante_ci);
+                ->accept('application/json')
+                ->get(config('app.api_url') . 'representante/' . $this->representante_ci);
             $response = json_decode((string)$response->getBody(), true);
             if ($response['representante'] == null) {
                 $this->representante = "";
@@ -122,18 +135,17 @@ class CrearMiembro extends Component
                 $this->alert('warning', 'Estimado usuario, los datos ingresados no coinciden con los miembros registrados.', [
                     'position' => 'center'
                 ]);
-            }else if ($response['representante']['edad']<18) {
+            } else if ($response['representante']['edad'] < 18) {
                 $this->representante = "";
                 $this->id_representante = "";
                 $this->alert('warning', 'Estimado usuario, el representante debe ser mayor de edad.', [
                     'position' => 'center'
                 ]);
-            }else{
+            } else {
                 $this->representante = $response['representante'];
                 $this->id_representante = $response['representante']['id'];
             }
-
-        }else{
+        } else {
             $this->representante = "";
             $this->id_representante = "";
             $this->alert('warning', 'Estimado usuario, debe ingresar un número de identificación.', [
@@ -195,51 +207,68 @@ class CrearMiembro extends Component
         return $this->ErrorMessages;
     }
 
-    public function guardar(){
+    public function guardar()
+    {
 
         $this->validate();
 
         $data = Http::withToken(session('token'))
-                        ->accept('application/json')
-                        ->post(config('app.api_url') .'miembros',[
-                            'nombre' => $this->nombre,
-                            'apellido' => $this->apellido,
-                            'fecha_nacimiento' => $this->fechaNacimiento,
-                            'ci' => $this->ci,
-                            'edad' => $this->edad,
-                            'telefono' => $this->telefono,
-                            'correo' => $this->correo,
-                            'nro_casa' => $this->nro_casa,
-                            'calle' => $this->calle,
-                            'id_representante' => $this->id_representante,
-                            'iglesia_id' => $this->iglesia_id,
-                            'rango_id' => $this->rango_id,
-                            'estado_civil_id' => $this->estado_civil_id,
-                            'estado_id' => $this->estado_id,
-                            'municipio_id' => $this->municipio_id,
-                            'parroquia_id' => $this->parroquia_id,
-                        ]);
+            ->accept('application/json')
+            ->post(config('app.api_url') . 'miembros', [
+                'nombre' => $this->nombre,
+                'apellido' => $this->apellido,
+                'fecha_nacimiento' => $this->fechaNacimiento,
+                'ci' => $this->ci,
+                'edad' => $this->edad,
+                'telefono' => $this->telefono,
+                'correo' => $this->correo,
+                'nro_casa' => $this->nro_casa,
+                'calle' => $this->calle,
+                'id_representante' => $this->id_representante,
+                'iglesia_id' => $this->iglesia_id,
+                'rango_id' => $this->rango_id,
+                'estado_civil_id' => $this->estado_civil_id,
+                'estado_id' => $this->estado_id,
+                'municipio_id' => $this->municipio_id,
+                'parroquia_id' => $this->parroquia_id,
+            ]);
 
         //$data = json_decode((string)$data->getBody(), true);
-        if ($data->successful()){
+        if ($data->successful()) {
             $this->alert('success', 'Miembro creado satisfactoriamente', [
                 'position' => 'center'
             ]);
-            //TODO: falta resetear el formulario cuando abre y cierra
-            //$this->reset(['nombre','correo','fecha']);
-            $this->dispatchBrowserEvent('closeModal');
-            $this->emit('render');
-        }else{
+            $this->emit('updateTabla');
+            $datos = [
+                'modal' => '#modalCrearMiembro',
+                'accion' => 'cerrar'
+            ];
+            $this->dispatchBrowserEvent('modal', $datos);
+            $this->limpiarModal();
+        } else {
+            Log::error('Error función: guardar()');
+            Log::error('Archivo: CrearMiembro');
+            if (isset($data['errors'])) {
+                foreach ($data['errors'] as $key => $errores) {
+                    foreach ($errores as $error) {
+                        Log::error($key . ' mensaje: ' . $error);
+                    }
+                }
+            }
             $this->alert('warning', 'Estimado usuario, no se ha podido registrar el nuevo miembro, por favor intente más tarde.', [
                 'position' => 'center'
             ]);
         }
     }
 
-    public function borrar(){
-        $this->dispatchBrowserEvent('closeModal');
-        $this->resetErrorBag();
-        $this->resetValidation();
+    public function salir()
+    {
+        $this->limpiarModal();
+        $datos = [
+            'modal' => '#modalCrearMiembro',
+            'accion' => 'cerrar'
+        ];
+        $this->dispatchBrowserEvent('modal', $datos);
     }
 
     public function formStep($step)

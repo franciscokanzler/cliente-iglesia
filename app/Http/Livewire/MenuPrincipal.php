@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Http;
 
 class MenuPrincipal extends Component
 {
+    public $fijo;
+
     public function opcion($numero)
     {
-        $this->emit('menu',$numero);
+        $this->emit('menu', $numero);
     }
 
     public function logout()
@@ -17,7 +19,7 @@ class MenuPrincipal extends Component
         $token = session('token');
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->get('http://127.0.0.1:8000/api/logout');
+        ])->get(config('app.api_url') . 'logout');
         if ($response->successful()) {
             session()->forget('token');
             return redirect('/login');

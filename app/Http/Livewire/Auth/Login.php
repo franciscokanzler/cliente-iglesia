@@ -28,14 +28,18 @@ class Login extends Component
 
     public function login()
     {
-        $response = Http::post('http://127.0.0.1:8000/api/usuarios/login', [
+        $response = Http::post(config('app.api_url') .'usuarios/login', [
             'email' => $this->email,
             'password' => $this->password,
         ]);
 
         if ($response->ok()) {
             $token = $response['token'];
-            session(['token' => $token]);
+            $user = $response['user'];
+            session([
+                'token' => $token,
+                'user' => $user
+            ]);
             return redirect('/dashboard');
         } else {
             $this->errorMessage = 'Credenciales inválidas.';

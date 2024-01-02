@@ -16,10 +16,15 @@ class ConsultarMiembro extends Component
 
     public $currentStep = 1, $opcion = "consultar";
 
-    protected $listeners = ['limpiarModal', 'readMiembro'];
+    protected $listeners = ['limpiarModal', 'read' => 'readMiembro'];
 
     public function salir(){
-        $this->dispatchBrowserEvent('closeModal');
+        $this->limpiarModal();
+        $datos = [
+            'modal' => '#modalConsultarMiembro',
+            'accion' => 'cerrar'
+        ];
+        $this->dispatchBrowserEvent('modal', $datos);
     }
 
     public function formStep($step)
@@ -129,6 +134,11 @@ class ConsultarMiembro extends Component
             $this->parroquia_id = $miembro['parroquia_id'];
 
 
+            $datos = [
+                'modal' => '#modalConsultarMiembro',
+                'accion' => 'abrir'
+            ];
+            $this->dispatchBrowserEvent('modal', $datos);
         } catch (\Throwable $th) {
             Log::error('Error función ConsultarMiembro.readMiembro: ' . $th->getMessage());
             Log::error('Archivo: ' . $th->getFile());

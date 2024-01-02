@@ -10,16 +10,18 @@
     @endif
     {{-- {{$paginar}} --}}
     @if ($paginar == 'dashboard')
-        <livewire:dashboard>
+        <livewire:dashboard />
     @elseif ($paginar == 'profile')
-        <livewire:profile>
+        <livewire:profile />
     @elseif ($paginar == 'tables')
-        <livewire:tables>
+        <livewire:tables />
     @elseif ($paginar == 'admin')
-        <livewire:admin>
+        <livewire:admin />
     @elseif ($paginar == 'iglesia.index')
-        <livewire:iglesia.iglesia>
+        <livewire:iglesia.iglesia />
     @elseif ($paginar == 'miembro.index')
-        <livewire:miembro.miembro-index>
+        <livewire:miembro.miembro-index />
+    @elseif ($paginar == 'equipo')
+        <livewire:equipo.equipo />
     @endif
 </div>

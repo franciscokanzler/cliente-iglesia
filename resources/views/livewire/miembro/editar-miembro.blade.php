@@ -13,8 +13,14 @@
                             @enderror --}}
                         </div>
                         <div class="card-body">
-                            @if ($this->data != "")
-                                <x-miembro_form/>
+                            @if ($this->data != '')
+                                <x-miembro_form />
+                            @else
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-center">
+                                        <img src="assets/img/loading.gif" alt="Cargando..." style="width: 5%">
+                                    </div>
+                                </div>
                             @endif
                         </div>
                     </div>

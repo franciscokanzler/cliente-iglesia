@@ -21,9 +21,10 @@ class EditarMiembro extends Component
 
     public $currentStep = 1, $opcion = "actualizar";
 
-    protected $listeners = ['limpiarModal', 'DatosMiembro'];
+    protected $listeners = ['limpiarModal', 'update' => 'DatosMiembro'];
 
-    public function limpiarModal(){
+    public function limpiarModal()
+    {
         $this->currentStep = 1;
         $this->reset([
             'nombre', 'apellido', 'fechaNacimiento', 'ci', 'edad', 'telefono', 'correo', 'nro_casa', 'calle',
@@ -34,16 +35,16 @@ class EditarMiembro extends Component
         $this->resetValidation();
     }
 
-    public function updatedFechaNacimiento(){
+    public function updatedFechaNacimiento()
+    {
         if (!empty($this->fechaNacimiento)) {
             $fechaNacimiento = Carbon::createFromFormat('Y-m-d', $this->fechaNacimiento);
             $this->edad = $fechaNacimiento->diffInYears(Carbon::now());
         }
 
-        if($this->edad < 9){
+        if ($this->edad < 9) {
             $this->ci = "";
             $this->estado_civil_id = "";
-
         }
 
         if ($this->edad > 17) {
@@ -57,13 +58,13 @@ class EditarMiembro extends Component
         try {
             if ($estado_id != "") {
                 $response = Http::withToken(session('token'))
-                            ->accept('application/json')
-                            ->get(config('app.api_url') . 'municipios/' . $estado_id);
+                    ->accept('application/json')
+                    ->get(config('app.api_url') . 'municipios/' . $estado_id);
                 $data = json_decode((string)$response->getBody(), true);
                 $this->municipio_id = "";
                 $this->parroquia_id = "";
                 $this->municipio = $data['municipio'];
-            }else{
+            } else {
                 $this->municipio_id = "";
                 $this->parroquia_id = "";
                 $this->municipio = "";
@@ -81,14 +82,14 @@ class EditarMiembro extends Component
         try {
             if ($municipio_id != "") {
                 $response = Http::withToken(session('token'))
-                                ->accept('application/json')
-                                ->get(config('app.api_url') . 'parroquias/' . $municipio_id);
+                    ->accept('application/json')
+                    ->get(config('app.api_url') . 'parroquias/' . $municipio_id);
 
                 $data = json_decode((string)$response->getBody(), true);
                 //dd($data);
                 $this->parroquia_id = "";
                 $this->parroquia = $data['parroquia'];
-            }else{
+            } else {
                 $this->parroquia_id = "";
                 $this->parroquia = "";
             }
@@ -99,12 +100,13 @@ class EditarMiembro extends Component
         }
     }
 
-    public function buscarRepresentante(){
+    public function buscarRepresentante()
+    {
         if ($this->representante_ci != "") {
             //list($type, $representante_ci) = explode('-', Str::upper($this->representante_ci));
             $response = Http::withToken(session('token'))
-                                ->accept('application/json')
-                                ->get(config('app.api_url') . 'representante/' . $this->representante_ci);
+                ->accept('application/json')
+                ->get(config('app.api_url') . 'representante/' . $this->representante_ci);
             $response = json_decode((string)$response->getBody(), true);
             if ($response['representante'] == null) {
                 $this->representante = "";
@@ -112,18 +114,17 @@ class EditarMiembro extends Component
                 $this->alert('warning', 'Estimado usuario, los datos ingresados no coinciden con los miembros registrados.', [
                     'position' => 'center'
                 ]);
-            }else if ($response['representante']['edad']<18) {
+            } else if ($response['representante']['edad'] < 18) {
                 $this->representante = "";
                 $this->id_representante = "";
                 $this->alert('warning', 'Estimado usuario, el representante debe ser mayor de edad.', [
                     'position' => 'center'
                 ]);
-            }else{
+            } else {
                 $this->representante = $response['representante'];
                 $this->id_representante = $response['representante']['id'];
             }
-
-        }else{
+        } else {
             $this->representante = "";
             $this->id_representante = "";
             $this->alert('warning', 'Estimado usuario, debe ingresar un número de identificación.', [
@@ -185,12 +186,13 @@ class EditarMiembro extends Component
         return $this->ErrorMessages;
     }
 
-    public function DatosMiembro($miembro){
+    public function DatosMiembro($miembro)
+    {
         try {
             $this->limpiarModal();
             $miembro = Http::withToken(session('token'))
-                            ->accept('application/json')
-                            ->get(config('app.api_url').'miembros/'.$miembro.'/edit');
+                ->accept('application/json')
+                ->get(config('app.api_url') . 'miembros/' . $miembro . '/edit');
 
             $miembro = json_decode((string)$miembro->getBody(), true);
             $miembro = $miembro['miembro'];
@@ -215,8 +217,8 @@ class EditarMiembro extends Component
             $this->estado_id = $miembro['estado_id'];
 
             $datosSelect = Http::withToken(session('token'))
-                            ->accept('application/json')
-                            ->get(config('app.api_url').'miembros/create');
+                ->accept('application/json')
+                ->get(config('app.api_url') . 'miembros/create');
 
             $this->data = json_decode((string)$datosSelect->getBody(), true);
             $this->data['miembro_id'] = $miembro['id'];
@@ -229,6 +231,11 @@ class EditarMiembro extends Component
             $this->parroquia_id = $miembro['parroquia_id'];
 
 
+            $datos = [
+                'modal' => '#modalEditarMiembro',
+                'accion' => 'abrir'
+            ];
+            $this->dispatchBrowserEvent('modal', $datos);
         } catch (\Throwable $th) {
             Log::error('Error función EditarMiembro.DatosMiembro: ' . $th->getMessage());
             Log::error('Archivo: ' . $th->getFile());
@@ -236,39 +243,45 @@ class EditarMiembro extends Component
         }
     }
 
-    public function actualizar($id){
+    public function actualizar($id)
+    {
         $this->validate();
 
         $data = Http::withToken(session('token'))
-                        ->accept('application/json')
-                        ->put(config('app.api_url') .'miembros/'.$id,[
-                            'nombre' => $this->nombre,
-                            'apellido' => $this->apellido,
-                            'fecha_nacimiento' => $this->fechaNacimiento,
-                            'ci' => $this->ci,
-                            'edad' => $this->edad,
-                            'telefono' => $this->telefono,
-                            'correo' => $this->correo,
-                            'nro_casa' => $this->nro_casa,
-                            'calle' => $this->calle,
-                            'id_representante' => $this->id_representante,
-                            'iglesia_id' => $this->iglesia_id,
-                            'rango_id' => $this->rango_id,
-                            'estado_civil_id' => $this->estado_civil_id,
-                            'estado_id' => $this->estado_id,
-                            'municipio_id' => $this->municipio_id,
-                            'parroquia_id' => $this->parroquia_id,
-                        ]);
+            ->accept('application/json')
+            ->put(config('app.api_url') . 'miembros/' . $id, [
+                'nombre' => $this->nombre,
+                'apellido' => $this->apellido,
+                'fecha_nacimiento' => $this->fechaNacimiento,
+                'ci' => $this->ci,
+                'edad' => $this->edad,
+                'telefono' => $this->telefono,
+                'correo' => $this->correo,
+                'nro_casa' => $this->nro_casa,
+                'calle' => $this->calle,
+                'id_representante' => $this->id_representante,
+                'iglesia_id' => $this->iglesia_id,
+                'rango_id' => $this->rango_id,
+                'estado_civil_id' => $this->estado_civil_id,
+                'estado_id' => $this->estado_id,
+                'municipio_id' => $this->municipio_id,
+                'parroquia_id' => $this->parroquia_id,
+            ]);
 
         //$data = json_decode((string)$data->getBody(), true);
-        if ($data->successful()){
+        if ($data->successful()) {
             $this->alert('success', 'Miembro actualizado satisfactoriamente', [
                 'position' => 'center'
             ]);
             //$this->reset(['nombre','correo','fecha']);
-            $this->dispatchBrowserEvent('closeModal');
-            $this->emit('render');
-        }else{
+            $this->emit('updateTabla');
+            $datos = [
+                'modal' => '#modalEditarMiembro',
+                'accion' => 'cerrar'
+            ];
+            $this->dispatchBrowserEvent('modal', $datos);
+            $this->limpiarModal();
+        } else {
             $this->alert('warning', 'Estimado usuario, no se ha podido actualizar el miembro, por favor intente más tarde.', [
                 'position' => 'center'
             ]);
@@ -276,8 +289,14 @@ class EditarMiembro extends Component
         }
     }
 
-    public function salir(){
-        $this->dispatchBrowserEvent('closeModal');
+    public function salir()
+    {
+        $this->limpiarModal();
+        $datos = [
+            'modal' => '#modalEditarMiembro',
+            'accion' => 'cerrar'
+        ];
+        $this->dispatchBrowserEvent('modal', $datos);
     }
 
     public function formStep($step)
