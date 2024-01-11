@@ -6,26 +6,26 @@
             </div>
             <div class="col-7 text-end pb-3 px-lg-4">
                 <x-boton_menu wire:click="$emit('limpiarModal')" title="Crear"
-                    class="btn-admin bg-gradient-marron-oscuro p-0 mx-lg-4" nombreIcono="fa-solid fa-plus"/>
+                    class="btn-admin bg-gradient-marron-oscuro p-0 mx-lg-4 {{ $btnSombra }}" nombreIcono="fa-solid fa-plus"/>
             </div>
         </div>
-        <div class="row d-flex">
+        <div class="row d-flex mb-3">
             <div class="row mb-3 col-12 col-sm-8 col-md-6 col-lg-4">
                 <input type="text" class="form-control col-12" placeholder="Buscar" aria-label="Buscar"
                     aria-describedby="buscar-addon" wire:model.defer="buscar">
             </div>
             <div class="row mb-3 col-12 col-sm-12 col-md-6">
-                <select class="btn btn-admin bg-gradient-marron-oscuro p-0 mb-0 w-auto" wire:model.defer="buscarPor">
+                <select class="btn btn-admin bg-gradient-marron-oscuro p-0 mb-0 w-auto {{ $btnSombra }}" wire:model.defer="buscarPor">
                     <option value="" selected>Filtar por</option>
                     @foreach ($columnas as $columna)
                         <option value="{{ $columna['tabla'] }}.{{ $columna['columna'] }}">{{ $columna['nombre'] }}
                         </option>
                     @endforeach
                 </select>
-                <x-boton_menu title="" class="btn-admin bg-gradient-marron ms-1 ms-sm-3 me-0 p-0 col-1"
+                <x-boton_menu title="" class="btn-admin bg-gradient-marron ms-1 ms-sm-3 me-0 p-0 col-1 {{ $btnSombra }}"
                     title="Buscar" nombreIcono="fa-solid fa-magnifying-glass" wire:click="buscar" />
                 <x-boton_menu wire:click="limpiarFiltros()" title="Limpiar filtros"
-                    class="btn-admin bg-gradient-marron-oscuro p-0 ms-1 ms-sm-3 me-0" nombreIcono="fa-solid fa-trash" />
+                    class="btn-admin bg-gradient-marron-oscuro p-0 ms-1 ms-sm-3 me-0 {{ $btnSombra }}" nombreIcono="fa-solid fa-trash" />
             </div>
         </div>
     </div>
@@ -65,12 +65,12 @@
                                     @endforeach
                                     <td class="align-middle text-center">
                                         <x-boton_menu wire:click="$emit('read', {{ $datos['id'] }})" title="Ver"
-                                            class="btn-admin bg-gradient-marron-claro p-0"
+                                            class="btn-admin bg-gradient-marron-claro p-0 {{ $btnSombra }}"
                                             nombreIcono="fa-solid fa-magnifying-glass"/>
                                         <x-boton_menu wire:click="$emit('update', {{ $datos['id'] }})" title="Editar"
-                                            class="btn-admin bg-gradient-marron p-0" nombreIcono="fa-solid fa-pen"/>
+                                            class="btn-admin bg-gradient-marron p-0 {{ $btnSombra }}" nombreIcono="fa-solid fa-pen"/>
                                         <x-boton_menu wire:click="eliminar({{ $datos['id'] }})" title="Eliminar"
-                                            class="btn-admin bg-gradient-marron-oscuro p-0"
+                                            class="btn-admin bg-gradient-marron-oscuro p-0 {{ $btnSombra }}"
                                             nombreIcono="fa-solid fa-trash" />
                                     </td>
                                 </tr>
@@ -82,7 +82,7 @@
                     <ul class="pagination mt-4">
                         <div class="row col-12 mx-auto collapse navbar-collapse">
                             <div class="form-group col-12 col-lg-7">
-                                <select class="btn btn-admin bg-gradient-marron-oscuro p-0 ms-0 me-0 mb-0 w-auto"
+                                <select class="btn btn-admin bg-gradient-marron-oscuro p-0 ms-0 me-0 mb-0 w-auto {{ $btnSombra }}"
                                     wire:model.defer="page" wire:change="cambiarPag()">
                                     <option value="5" selected>Pag.5</option>
                                     <option value="10">Pag.10</option>
@@ -93,10 +93,10 @@
                                     <option value="100">Pag.100</option>
                                 </select>
                                 <x-boton_menu wire:click="paginar('{{ $prevPage }}')" title="Anterior"
-                                    class="btn-admin bg-gradient-marron-claro p-0 col-12 me-sm-2 me-md-3"
+                                    class="btn-admin bg-gradient-marron-claro p-0 col-12 me-sm-2 me-md-3 {{ $btnSombra }}"
                                     nombreIcono="fa fa-angle-left" />
                                 <x-boton_menu title=""
-                                    class="btn-admin bg-gradient-marron-oscuro p-0 me-sm-2 me-md-3"
+                                    class="btn-admin bg-gradient-marron-oscuro p-0 me-sm-2 me-md-3 {{ $btnSombra }}"
                                     nombre="{{ $currentPage }}" data-bs-toggle="dropdown" aria-expanded="false" />
                                 <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
                                     <div class="input-group">
@@ -108,13 +108,13 @@
                                             wire:click="actualizarNroPagina" />
                                     </div>
                                 </ul>
-                                <x-boton_menu title="" class="btn-admin bg-gradient-marron p-0 me-sm-2 me-md-3"
+                                <x-boton_menu title="" class="btn-admin bg-gradient-marron p-0 me-sm-2 me-md-3 {{ $btnSombra }}"
                                     nombre="de" />
                                 <x-boton_menu title=""
-                                    class="btn-admin bg-gradient-marron-oscuro p-0 me-sm-2 me-md-3"
+                                    class="btn-admin bg-gradient-marron-oscuro p-0 me-sm-2 me-md-3 {{ $btnSombra }}"
                                     nombre="{{ $lastPage }}" wire:click="paginar('{{ $lastPageUrl }}')" />
                                 <x-boton_menu wire:click="paginar('{{ $nextPage }}')" title="Siguiente"
-                                    class="btn-admin bg-gradient-marron-claro p-0 col-12"
+                                    class="btn-admin bg-gradient-marron-claro p-0 col-12 {{ $btnSombra }}"
                                     nombreIcono="fa fa-angle-right" />
                             </div>
                         </div>

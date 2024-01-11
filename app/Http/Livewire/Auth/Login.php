@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class Login extends Component
 {
@@ -42,6 +43,7 @@ class Login extends Component
             ]);
             return redirect('/dashboard');
         } else {
+            //TODO:agregar alert para mensaje
             $this->errorMessage = 'Credenciales inválidas.';
         }
     }

@@ -7,23 +7,41 @@ use Illuminate\Support\Facades\Http;
 
 class MenuPrincipal extends Component
 {
-    public $fijo;
+    public $fijo, $mostrar, $btnSombra;
+
+    protected $listeners = ['mostrarMenu', 'menuFijo','sombra_btnMenu' => 'alternarSombra'];
+
+    public function mount()
+    {
+        $this->mostrar = false;
+    }
 
     public function opcion($numero)
     {
         $this->emit('menu', $numero);
     }
 
-    public function logout()
+    public function mostrarMenu()
     {
-        $token = session('token');
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->get(config('app.api_url') . 'logout');
-        if ($response->successful()) {
-            session()->forget('token');
-            return redirect('/login');
+        $this->mostrar = true;
+        $this->emit('configuracionInicial');
+    }
+
+    public function menuFijo($menuFijo = false)
+    {
+        if ($menuFijo) {
+            $this->fijo = 'menu-fixed';
+            $this->dispatchBrowserEvent('ajusteMargenBody');
+        } else {
+            $this->fijo = '';
+            $this->dispatchBrowserEvent('ajusteMenuDos');
+            $this->dispatchBrowserEvent('ajusteMargenBody');
         }
+    }
+
+    public function alternarSombra()
+    {
+        $this->btnSombra = ($this->btnSombra == '') ? 'sombra' : '';
     }
 
     public function render()

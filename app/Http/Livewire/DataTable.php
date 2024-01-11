@@ -5,20 +5,28 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Illuminate\Support\Facades\Cookie;
 
 class DataTable extends Component
 {
     use LivewireAlert;
 
-    public $prevPage,  $currentPage, $lastPage, $lastPageUrl, $nextPage, $page;
+    public $prevPage,  $currentPage, $lastPage, $lastPageUrl, $nextPage, $page, $btnSombra;
     public $nroPage, $columnas, $data, $token, $componente, $modales, $buscar, $buscarPor;
 
-    protected $listeners = ['updateTabla' => 'index'];
+    protected $listeners = ['updateTabla' => 'index','sombra_btnTabla' => 'alternarSombra'];
 
     public function mount()
     {
         $this->token = session('token');
         $this->currentPage = 1;
+        if (Cookie::has('user_' . session('user')['id'] . '_Sombras')) {
+            $sombras = json_decode(Cookie::get('user_' . session('user')['id'] . '_Sombras'), true);
+            if ($sombras['btnTabla']['status']) {
+                //dd($sombras);
+                $this->btnSombra = 'sombra';
+            }
+        }
         $this->index();
     }
 
@@ -130,6 +138,11 @@ class DataTable extends Component
             $this->currentPage = 1;
             $this->index();
         }
+    }
+
+    public function alternarSombra()
+    {
+        $this->btnSombra = ($this->btnSombra == '') ? 'sombra' : '';
     }
 
     public function render()

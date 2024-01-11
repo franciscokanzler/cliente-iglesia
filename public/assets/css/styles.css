@@ -71,6 +71,18 @@ body {
     color: var(--bg-text-body-color) !important;
 }
 
+.barraLateral {
+    margin-top: 60px;
+    transition: margin-top 0.5s ease;
+}
+
+@media (min-width: 992px) {
+    .barraLateral {
+        margin-top: 80px;
+        transition: margin-top 0.09s ease;
+    }
+}
+
 .card,
 .card-header,
 .card-body {
@@ -179,6 +191,8 @@ p,
 
 .bg-menu {
     background-image: var(--bg-gradient-1);
+    position: sticky;
+    z-index: 1500 !important;
 }
 
 .bg-opcion-azul {
@@ -224,7 +238,6 @@ p,
     background-position: center;
     border-radius: 0.75rem;
     color: #fff;
-    box-shadow: 0 8px 26px -4px rgba(9, 8, 8, 0.75), 0 8px 9px -5px rgb(15, 15, 15) !important;
     background-image: var(--bg-gradient-2);
 }
 
@@ -317,4 +330,8 @@ a:hover {
 ::after,
 ::before {
     box-sizing: border-box;
+}
+
+.sombra {
+    box-shadow: var(--btn-box-shadow) !important;
 }

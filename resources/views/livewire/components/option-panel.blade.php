@@ -2,22 +2,46 @@
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2" wire:click="rightMenu()">
         <i class="fa fa-cog py-2"> </i>
     </a>
-    <div class="card shadow-lg ">
+    <div class="card shadow-lg barraLateral">
         <div class="card-header pb-0 pt-3 ">
-            <div class="float-end">
-                <h5 class="mt-3 mb-0">Soft UI Configurator</h5>
-                <p>See our dashboard options.</p>
+            <div class="row">
+                <div class="col-3">
+                    <span>
+                        <a type="button" wire:click="rightMenu()" title="Cerrar menú">
+                            <i class="fa-solid fa-close"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="col-3">
+                    <span>
+                        <a type="button" wire:click="$emit('navegar','anterior')" title="Anterior">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="col-3">
+                    <span>
+                        <a type="button" wire:click="$emit('navegar','siguiente')" title="Siguiente">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="col-3">
+                    <span>
+                        <a type="button" wire:click="logout()" title="Salir">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        </a>
+                    </span>
+                </div>
             </div>
-            <div class="float-start mt-4">
-                <button class="btn btn-link text-dark p-0 fixed-plugin-close-button" wire:click="rightMenu()">
-                    <i class="fa fa-close"></i>
-                </button>
-            </div>
-            <!-- End Toggle Button -->
         </div>
-        <hr class="horizontal dark my-1">
+        <hr class="horizontal dark mt-3 my-3">
         <div class="card-body pt-sm-3 pt-0">
-            <li class="nav-item pb-3">
+            <div class="mt-1">
+                <h6 class="mb-0">Configuraciones</h6>
+                <p class="text-sm ms-3">Elige tus preferencias.</p>
+            </div>
+            <li class="nav-item pb-3 mt-3">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#colores" aria-controls="colores"
                     role="button">
                     <x-boton_menu title="Perfil" class="btn-admin-sm" nombreIcono="fa-solid fa-palette" />
@@ -78,26 +102,81 @@
                     </ul>
                 </div>
             </li>
-            <!-- Sidenav Type -->
-            <div class="mt-3">
-                <h6 class="mb-0">Sidenav Type</h6>
-                <p class="text-sm">Choose between 2 different sidenav types.</p>
-            </div>
-            <div class="d-flex">
-                <button class="btn bg-gradient-primary w-100 px-3 mb-2 active" data-class="bg-transparent"
-                    onclick="sidebarType(this)">Transparent</button>
-                <button class="btn bg-gradient-primary w-100 px-3 mb-2 me-2" data-class="bg-white"
-                    onclick="sidebarType(this)">White</button>
-            </div>
-            <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
-            <!-- Navbar Fixed -->
-            <div class="mt-3">
-                <h6 class="mb-0">Navbar Fixed</h6>
-            </div>
-            <div class="form-check form-switch ps-0">
-                <input class="form-check-input mt-1 float-end me-auto" type="checkbox" id="navbarFixed"
-                    onclick="navbarFixed(this)">
-            </div>
+            <li class="nav-item pb-3 mt-3">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sombra" aria-controls="sombra"
+                    role="button">
+                    <x-boton_menu title="Perfil" class="btn-admin-sm" nombreIcono="fa-solid fa-paint-roller" />
+                    <span class="nav-link-text ms-1">Configuración de sombras</span>
+                </a>
+                <div class="collapse" id="sombra" wire:ignore.self>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <ul class="nav ms-3 mt-3">
+                                <a href="javascript:void(0)" class="switch-trigger background-color">
+                                    <div class="row ms-1">
+                                        <li class="nav-item mt-2">
+                                            <h6 class="text-uppercase text-xs font-weight-bolder opacity-6">
+                                                Botones menú
+                                            </h6>
+                                        </li>
+                                        <li class="list-group-item border-0 px-0 d-flex ms-4">
+                                            <div class="form-check form-switch ps-0 d-flex my-auto">
+                                                <input class="form-check-input mx-auto" type="checkbox"
+                                                    wire:click="sombras('btnMenu')" {{ $sombras['btnMenu']['status'] == true ? 'checked' : '' }}>
+                                            </div>
+                                        </li>
+                                    </div>
+                                </a>
+                                <a href="javascript:void(0)" class="switch-trigger background-color">
+                                    <div class="row ms-1">
+                                        <li class="nav-item mt-2">
+                                            <h6 class="text-uppercase text-xs font-weight-bolder opacity-6">
+                                                Botones tablas
+                                            </h6>
+                                        </li>
+                                        <li class="list-group-item border-0 px-0 d-flex ms-4">
+                                            <div class="form-check form-switch ps-0 d-flex my-auto">
+                                                <input class="form-check-input mx-auto" type="checkbox"
+                                                    wire:click="sombras('btnTabla')" {{ $sombras['btnTabla']['status'] == true ? 'checked' : '' }}>
+                                            </div>
+                                        </li>
+                                    </div>
+                                </a>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item pb-3 mt-3">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#menuFijo" aria-controls="menuFijo"
+                    role="button">
+                    <x-boton_menu title="Perfil" class="btn-admin-sm" nombreIcono="fa-solid fa-grip" />
+                    <span class="nav-link-text ms-1">Configuración de menú</span>
+                </a>
+                <div class="collapse" id="menuFijo" wire:ignore.self>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <ul class="nav ms-3 mt-3">
+                                <a href="javascript:void(0)" class="switch-trigger background-color">
+                                    <div class="row ms-1">
+                                        <li class="nav-item mt-2">
+                                            <h6 class="text-uppercase text-xs font-weight-bolder opacity-6">
+                                                Fijar menú
+                                            </h6>
+                                        </li>
+                                        <li class="list-group-item border-0 px-0 d-flex ms-4">
+                                            <div class="form-check form-switch ps-0 d-flex my-auto">
+                                                <input class="form-check-input mx-auto" type="checkbox"
+                                                    wire:click="alternarMenuFijo()" {{ $menuFijo == true ? 'checked' : '' }}>
+                                            </div>
+                                        </li>
+                                    </div>
+                                </a>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         </div>
     </div>
 </div>

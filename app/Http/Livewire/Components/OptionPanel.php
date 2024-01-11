@@ -4,12 +4,24 @@ namespace App\Http\Livewire\Components;
 
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 
 class OptionPanel extends Component
 {
     use LivewireAlert;
 
-    public $menu, $colorActivo, $modoDark, $colorSeleccionado;
+    public $menu, $colorActivo, $modoDark, $colorSeleccionado, $menuFijo;
+
+    public $sombras = [
+        'btnMenu' => [
+            'status' => false,
+        ],
+        'btnTabla' => [
+            'status' => false,
+        ],
+    ];
 
     public $paletas = [
         'azul' => [
@@ -260,21 +272,107 @@ class OptionPanel extends Component
         ],
     ];
 
-    protected $listeners = ['rightMenu', 'nuevaPaleta'];
+    protected $listeners = ['rightMenu', 'nuevaPaleta', 'configuracionInicial'];
+
+    public function mount()
+    {
+        if (Cookie::has('user_' . session('user')['id'] . '_menu_fijo')) {
+            $this->menuFijo = Cookie::get('user_' . session('user')['id'] . '_menu_fijo');
+            //dd($this->menuFijo,'si');
+        } else {
+            $this->menuFijo = false;
+            //dd($this->menuFijo,'no');
+        }
+
+        if (Cookie::has('user_' . session('user')['id'] . '_Sombras')) {
+            $dataFromCookie = json_decode(Cookie::get('user_' . session('user')['id'] . '_Sombras'), true);
+
+            // Combinar los valores de la cookie con la estructura original
+            $this->sombras = $this->mergeWithDefaultStructure($dataFromCookie, $this->sombras);
+
+            // Debug
+            //dd($this->sombras, 'si');
+        }
+
+        if (Cookie::has('user_' . session('user')['id'] . '_modoDark')) {
+            $this->modoDark = Cookie::get('user_' . session('user')['id'] . '_modoDark');
+            //dd($this->modoDark);
+        } else {
+            $this->modoDark = false;
+        }
+
+        if (Cookie::has('user_' . session('user')['id'] . '_tipo_paleta')) {
+            $paleta = Cookie::get('user_' . session('user')['id'] . '_tipo_paleta');
+            if ($paleta != 'personalizada') {
+                //dd('color',$this->modoDark, $paleta);
+                $this->colorActivo = $paleta;
+                //$this->cambiarPaleta($this->colorActivo);
+            } else {
+                if (Cookie::get('paleta_' . session('user')['id'] . '_paleta')) {
+                    $this->nuevaPaleta(json_decode(Cookie::get('paleta_' . session('user')['id'] . '_paleta'), true));
+                } else {
+                    $this->colorActivo = 'azul';
+                    //$this->cambiarPaleta($this->colorActivo);
+                }
+            }
+        } else {
+            $this->colorActivo = 'azul';
+            //$this->cambiarPaleta($this->colorActivo);
+        }
+    }
+
+    private function mergeWithDefaultStructure($data, $defaultStructure)
+    {
+        foreach ($defaultStructure as $key => $value) {
+            // Verificar si la clave existe en los datos de la cookie
+            if (array_key_exists($key, $data)) {
+                // Si la clave existe, utilizar el valor de la cookie
+                $defaultStructure[$key] = $data[$key];
+            }
+        }
+
+        return $defaultStructure;
+    }
 
     public function rightMenu()
     {
         $this->menu = $this->menu == "" ? "show" : "";
+        $this->dispatchBrowserEvent('ajusteMenuDos');
     }
 
-    public function mount()
+    public function configuracionInicial()
     {
-        $this->modoDark = false;
-        $this->colorActivo = 'azul';
+        if ($this->menuFijo) {
+            $this->fijarMenu();
+        }
+        foreach ($this->sombras as $key => $value) {
+            if ($this->sombras[$key]['status']) {
+                if ($key != 'btnTabla') {
+                    $this->emit('sombra_' . $key);
+                }
+            }
+        }
+
+        $this->cambiarPaleta($this->colorActivo);
+        //$this->dispatchBrowserEvent('sombra',$this->sombras);
+        $this->dispatchBrowserEvent('ajusteMenuDos');
+    }
+
+    public function alternarMenuFijo()
+    {
+        $this->menuFijo = !$this->menuFijo;
+        Cookie::queue('user_' . session('user')['id'] . '_menu_fijo', $this->menuFijo);
+        $this->fijarMenu();
+    }
+
+    public function fijarMenu()
+    {
+        $this->emit('menuFijo', $this->menuFijo);
     }
 
     public function cambiarPaleta($color = 'azul')
     {
+        //dd('modo Dark: '.$this->modoDark, $color,json_decode(Cookie::get('paleta_' . session('user')['id'] . '_paleta'), true));
         foreach ($this->paletas as $key => $value) {
             $this->paletas[$key]['status'] = ($key !== $color && ($value['status'] || !$value['status'])) ? false : true;
             /* $this->dispatchBrowserEvent('infoConsola', 'key ' . $key . ' color ' . $color);
@@ -283,9 +381,15 @@ class OptionPanel extends Component
             if ($key === $color && $this->paletas[$key]['status']) {
                 $this->colorActivo = $key;
                 $modo = (!$this->modoDark) ? 'lithg' : 'dark';
+                //dd($modo, $this->paletas[$key][$modo]);
                 $this->dispatchBrowserEvent('modificarPaleta', $this->paletas[$key][$modo]);
             }
         }
+
+        /* Cache::forget('user_' . session('user')['id'] . '_tipo_paleta');
+        Cache::forever('user_' . session('user')['id'] . '_tipo_paleta', $color); */
+        Cookie::queue('user_' . session('user')['id'] . '_tipo_paleta', $color);
+
         //$this->dispatchBrowserEvent('infoConsola', '====================================================');
 
         //dd($this->paletas);
@@ -298,8 +402,8 @@ class OptionPanel extends Component
 
     public function nuevaPaleta($nuevaPaleta)
     {
-        $this->paletas['personalizada']['lithg']['--bg-gradient-1'] = 'linear-gradient(310deg, '.$nuevaPaleta[3].', '.$nuevaPaleta[0].')';
-        $this->paletas['personalizada']['lithg']['--bg-gradient-2'] = 'linear-gradient(310deg, '.$nuevaPaleta[0].', '.$nuevaPaleta[3].')';
+        $this->paletas['personalizada']['lithg']['--bg-gradient-1'] = 'linear-gradient(310deg, ' . $nuevaPaleta[3] . ', ' . $nuevaPaleta[0] . ')';
+        $this->paletas['personalizada']['lithg']['--bg-gradient-2'] = 'linear-gradient(310deg, ' . $nuevaPaleta[0] . ', ' . $nuevaPaleta[3] . ')';
         $this->paletas['personalizada']['lithg']['--bg-fixed-plugin-button-color'] = $nuevaPaleta[3];
         $this->paletas['personalizada']['lithg']['--bg-h-color'] = $nuevaPaleta[3];
         $this->paletas['personalizada']['lithg']['--bg-text-body-color'] = $nuevaPaleta[4];
@@ -307,8 +411,8 @@ class OptionPanel extends Component
         $this->paletas['personalizada']['lithg']['--bg-form-check-input-background'] = $nuevaPaleta[3];
         $this->paletas['personalizada']['lithg']['--bg-form-check-input-after'] = $nuevaPaleta[1];
 
-        $this->paletas['personalizada']['dark']['--bg-gradient-1'] = 'linear-gradient(310deg, '.$nuevaPaleta[3].', '.$nuevaPaleta[4].')';
-        $this->paletas['personalizada']['dark']['--bg-gradient-2'] = 'linear-gradient(310deg, '.$nuevaPaleta[3].', '.$nuevaPaleta[1].')';
+        $this->paletas['personalizada']['dark']['--bg-gradient-1'] = 'linear-gradient(310deg, ' . $nuevaPaleta[3] . ', ' . $nuevaPaleta[4] . ')';
+        $this->paletas['personalizada']['dark']['--bg-gradient-2'] = 'linear-gradient(310deg, ' . $nuevaPaleta[3] . ', ' . $nuevaPaleta[1] . ')';
         $this->paletas['personalizada']['dark']['--bg-fixed-plugin-button-color'] = $nuevaPaleta[3];
         $this->paletas['personalizada']['dark']['--bg-h-color'] = $nuevaPaleta[3];
         $this->paletas['personalizada']['dark']['--bg-text-body-color'] = $nuevaPaleta[4];
@@ -316,16 +420,44 @@ class OptionPanel extends Component
         $this->paletas['personalizada']['dark']['--bg-form-check-input-background'] = $nuevaPaleta[3];
         $this->paletas['personalizada']['dark']['--bg-form-check-input-after'] = $nuevaPaleta[1];
 
+        /* Cache::forget('paleta_' . session('user')['id'] . '_paleta');
+        Cache::forever('paleta_' . session('user')['id'] . '_paleta', $nuevaPaleta); */
+        Cookie::queue('paleta_' . session('user')['id'] . '_paleta', json_encode($nuevaPaleta));
+
         $this->cambiarPaleta('personalizada');
     }
 
     public function modoDark()
     {
         $this->modoDark = (!$this->modoDark);
+        /* Cache::forget('user_' . session('user')['id'] . '_modoDark');
+        Cache::forever('user_' . session('user')['id'] . '_modoDark', $this->modoDark); */
+        Cookie::queue('user_' . session('user')['id'] . '_modoDark', $this->modoDark);
         foreach ($this->paletas as $key => $value) {
             $color = ($value['status'] == true) ? $key : $this->colorActivo;
         }
         $this->cambiarPaleta($color);
+    }
+
+    public function sombras($sombra)
+    {
+        $this->sombras[$sombra]['status'] = !$this->sombras[$sombra]['status'];
+        //dd($this->sombras);
+        Cookie::queue('user_' . session('user')['id'] . '_Sombras', json_encode($this->sombras));
+
+        $this->emit('sombra_' . $sombra);
+    }
+
+    public function logout()
+    {
+        $token = session('token');
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->get(config('app.api_url') . 'logout');
+        if ($response->successful()) {
+            session()->forget('token');
+            return redirect('/login');
+        }
     }
 
     public function render()
